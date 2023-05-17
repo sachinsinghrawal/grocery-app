@@ -8,6 +8,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import SwiperComponent from './screens/SwiperComponent';
+import Toast from 'react-native-toast-message';
 import {Icon} from 'react-native-elements';
 import SignUp from './screens/SignUp';
 import Otp from './screens/otp';
@@ -31,8 +32,12 @@ import OrderDetails from './screens/orderDetails';
 import OrderTrack from './screens/orderTrack';
 import DeliveryDetails from './screens/DeliveryDetails';
 
-// top navigation 
+// top navigation
 const TabTop = createMaterialTopTabNavigator();
+
+global.api = 'https://api.kiranmegamarket.in/api/';
+
+global.img_url = 'https://cdn.kiranmegamarket.in/';
 
 export class MyTab extends Component {
   render() {
@@ -129,8 +134,7 @@ class TabNav extends Component {
   }
 }
 
-
-// Drawer navigation 
+// Drawer navigation
 const Drawer = createDrawerNavigator();
 
 class DrawerComponent extends Component {
@@ -139,11 +143,11 @@ class DrawerComponent extends Component {
       <Drawer.Navigator
         // drawerContent={props => <DrawerData {...props} />}
         screenOptions={({route}) => ({
-          swipeEnabled: false,
+          swipeEnabled: true,
           headerShown: false,
         })}>
-        <Drawer.Screen name="btmnav" component={TabNav} />
-        <Drawer.Screen name="address" component={Address}/>
+        <Drawer.Screen name="HOME" component={TabNav} />
+        <Drawer.Screen name="Address" component={Address} />
       </Drawer.Navigator>
     );
   }
@@ -163,7 +167,6 @@ class DrawerData extends Component {
 const Stack = createNativeStackNavigator();
 
 export default class App extends Component {
-
   componentDidMount() {
     setTimeout(() => {
       SplashScreen.hide();
@@ -171,30 +174,33 @@ export default class App extends Component {
   }
   render() {
     return (
-      <NavigationContainer>
-        <Stack.Navigator
-          // initialRouteName={'Profile'}
-          screenOptions={{headerShown: false}}>
-          <Stack.Screen name="Hm" component={SwiperComponent} />
-          <Stack.Screen name="SignUp" component={SignUp} />
-          <Stack.Screen name="otp" component={Otp} />
-          <Stack.Screen name="Profile" component={Profile} />
-          {/* <Stack.Screen name="tabNav" component={TabNav} /> */}
-          <Stack.Screen name="filter" component={Filter} />
-          <Stack.Screen name="item" component={Item} />
-          <Stack.Screen name="mProfile" component={Mprofile} />
-          <Stack.Screen name="orderTrack" component={OrderTrack} />
-          <Stack.Screen name="deliveryDetails" component={DeliveryDetails} />
-          <Stack.Screen name="orderDetails" component={OrderDetails} />
-          <Stack.Screen name="cart" component={MyCart} />
-          <Stack.Screen name="checkout" component={CheckOut} />
-          <Stack.Screen name="srch" component={Search} />
-          <Stack.Screen name="address" component={Address} />
-          <Stack.Screen name="thanks" component={Thanks} />
-          <Stack.Screen name="map" component={GoogleMap} />
-          <Stack.Screen name="drawer" component={DrawerComponent} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <>
+        <NavigationContainer>
+          <Stack.Navigator
+            // initialRouteName={'Profile'}
+            screenOptions={{headerShown: false}}>
+            <Stack.Screen name="Hm" component={SwiperComponent} />
+            <Stack.Screen name="SignUp" component={SignUp} />
+            <Stack.Screen name="otp" component={Otp} />
+            <Stack.Screen name="Profile" component={Profile} />
+            {/* <Stack.Screen name="Home" component={HomePage} /> */}
+            <Stack.Screen name="filter" component={Filter} />
+            <Stack.Screen name="item" component={Item} />
+            <Stack.Screen name="mProfile" component={Mprofile} />
+            <Stack.Screen name="orderTrack" component={OrderTrack} />
+            <Stack.Screen name="deliveryDetails" component={DeliveryDetails} />
+            <Stack.Screen name="orderDetails" component={OrderDetails} />
+            <Stack.Screen name="cart" component={MyCart} />
+            <Stack.Screen name="checkout" component={CheckOut} />
+            {/* <Stack.Screen name="srch" component={Search} /> */}
+            <Stack.Screen name="address" component={Address} />
+            <Stack.Screen name="thanks" component={Thanks} />
+            <Stack.Screen name="map" component={GoogleMap} />
+            <Stack.Screen name="drawer" component={DrawerComponent} />
+          </Stack.Navigator>
+        </NavigationContainer>
+        <Toast />
+      </>
     );
   }
 }

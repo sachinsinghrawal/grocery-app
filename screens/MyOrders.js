@@ -20,7 +20,7 @@ export default class MyOrders extends Component
         return (
           <View style={{flexDirection: 'row', alignItems: 'center', width: 200}}>
             <TouchableOpacity onPress={()=>this.props.navigation.goBack()}>
-              <Icon name="chevron-back-outline" type="ionicon" size={25} color='white'/>
+              <Icon name="chevron-back-outline" type="ionicon" size={25} color='black'/>
             </TouchableOpacity>
     
             <Text
@@ -28,7 +28,7 @@ export default class MyOrders extends Component
                 paddingLeft: 10,
                 fontSize: RFValue(14, 580),
                 fontWeight: '700',
-                color:'white'
+                color:'black'
               }}>
               My Orders
             </Text>
@@ -41,7 +41,7 @@ export default class MyOrders extends Component
 
                 <Header
                 leftComponent={this.renderLeftComponent}
-                containerStyle={{backgroundColor:'#faab5c'}}
+                containerStyle={{backgroundColor:'orange'}}
                />
                <MyTab/>
 

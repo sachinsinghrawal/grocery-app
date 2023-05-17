@@ -1,6 +1,6 @@
 import React,{Component} from "react";
 import { Text, TextInput, View,Image, TouchableOpacity, ScrollView,Button, Dimensions,StyleSheet} from "react-native";
-import { Icon } from "react-native-elements";
+import { Header, Icon } from "react-native-elements";
 import { RFValue } from "react-native-responsive-fontsize";
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
@@ -58,22 +58,28 @@ export default class Filter extends Component
             values,
         });
     }
+    renderLeftComponent=()=>{
+        return(
+            <View style={{flexDirection:'row',width:150,alignItems:'center'}}>
+            <TouchableOpacity style={{width:'23%',backgroundColor:'#fff',borderRadius:5,shadowColor:'black',elevation:5}} onPress={()=>this.props.navigation.goBack()}>
+               <Icon name='chevron-back-outline' type='ionicon' size={35}/>
+            </TouchableOpacity>
+            <Text style={{fontSize:RFValue(15,580),fontWeight:'600',paddingLeft:10,color:'black'}}>Filters</Text>
+           </View>
+        )
+    }
+    renderRightComponent=()=>{
+        return(
+            <TouchableOpacity style={{width:40,height:40,backgroundColor:'#fff',justifyContent:'center',borderRadius:5,shadowColor:'black',elevation:5}} onPress={()=>this.props.navigation.navigate('cart')}>
+            <Icon name='lock-closed-outline' type='ionicon' size={25}/>
+            </TouchableOpacity>
+        )
+    }
     render()
     {
         return(
-            <View style={{flex:1,width:'93%',alignSelf:'center',paddingTop:20}}>
-                <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-                    <View style={{flexDirection:'row',width:'40%',alignItems:'center'}}>
-                     <TouchableOpacity style={{width:'23%',backgroundColor:'#fff',borderRadius:5}} onPress={()=>this.props.navigation.goBack()}>
-                        <Icon name='chevron-back-outline' type='ionicon' size={35}/>
-                     </TouchableOpacity>
-                     <Text style={{fontSize:RFValue(15,580),fontWeight:'600',paddingLeft:10,color:'black'}}>Filters</Text>
-                    </View>
-                    
-                    <TouchableOpacity style={{width:'10%',backgroundColor:'#fff',justifyContent:'center',borderRadius:5}} onPress={()=>this.props.navigation.navigate('cart')}>
-                        <Icon name='lock-closed-outline' type='ionicon' size={25}/>
-                    </TouchableOpacity>
-                </View>
+            <View style={{flex:1,width:'93%',alignSelf:'center'}}>
+                <Header leftComponent={this.renderLeftComponent()} rightComponent={this.renderRightComponent()} containerStyle={{backgroundColor:'#F2F2F2',paddingHorizontal:0}}/>
 
                 <Text style={{fontSize:RFValue(15,580),fontWeight:'500',color:'black',marginTop:30,marginBottom:20}}>Sort by</Text>
                 <View style={{flexDirection:'row',justifyContent:'space-between'}}>

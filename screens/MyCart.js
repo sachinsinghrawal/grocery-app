@@ -192,7 +192,7 @@ export default class MyCart extends Component {
           </View>
 
           {/* addmoreButton */}
-          <TouchableOpacity style={{height:50,backgroundColor:'#f0c190',justifyContent:'center',alignItems:'center',marginBottom:5}} onPress={()=>this.props.navigation.navigate('srch')}>
+          <TouchableOpacity style={{height:50,backgroundColor:'#f0c190',justifyContent:'center',alignItems:'center',marginBottom:5}} onPress={()=>this.props.navigation.navigate('search')}>
             <Text style={{color:'red',fontSize:RFValue(14,580),fontWeight:'600'}}>
               Add more Product
             </Text>

@@ -52,7 +52,7 @@ class GoogleMap extends Component {
 
   render() {
     return (
-      <View style={{flex: 1}}>
+      <View style={{flex: 1,paddingTop:40}}>
         <View style={{flexDirection: 'row', justifyContent: 'space-around',marginTop:30,height:45}}>
           <TouchableOpacity style={{backgroundColor:'white',width:'14%',justifyContent:'center',borderRadius:55}} onPress={()=>this.props.navigation.goBack()}>
             <Icon name="arrow-back-outline" size={25} type="ionicon" />

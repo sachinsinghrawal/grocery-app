@@ -1,6 +1,6 @@
 import React,{Component} from "react";
 import { Text,View,Image, TouchableOpacity,FlatList, Dimensions,StyleSheet} from "react-native";
-import { CheckBox, Icon } from 'react-native-elements'
+import { CheckBox, Header, Icon } from 'react-native-elements'
 import {  RFValue } from "react-native-responsive-fontsize";
 
 const DATA = [
@@ -16,7 +16,8 @@ const DATA = [
 
 export default class Favourite extends Component
 {
-    state={checked:true};
+    state={
+        checked:true};
 
     renderItem=({item})=>{
         return (
@@ -46,7 +47,7 @@ export default class Favourite extends Component
                         <Text style={styler.txt}>1kg</Text>
                     </View>
                    
-                   <TouchableOpacity style={{height:'15%',alignItems:'center',justifyContent:'center',backgroundColor:'orange',borderRadius:10}}>
+                   <TouchableOpacity style={{height:'15%',alignItems:'center',justifyContent:'center',backgroundColor:'orange',borderRadius:10}} onPress={()=>alert('added successfully')}>
                     <Text>Add to Bag</Text>
                    </TouchableOpacity>
                 
@@ -56,12 +57,20 @@ export default class Favourite extends Component
             </View>
         )
     }
+    centerComponent=()=>{
+        return(
+            <View>
+                <Text style={{fontSize:RFValue(15,580),fontWeight:'600',color:'black'}}>Favourite</Text>
+            </View>
+        )
+    }
 
     render()
     {
         return (
             <View style={{flex:1}}>
-                 <View style={{marginTop:10}}>
+                 <Header centerComponent={this.centerComponent()} containerStyle={{backgroundColor:'orange'}}/>
+                 <View style={{marginTop:10,marginBottom:100}}>
                     <FlatList
                     data={DATA}
                     numColumns={2}

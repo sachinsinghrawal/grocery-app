@@ -111,7 +111,7 @@ export default class OrderTrack extends Component {
             </View>
           </View>
 
-          <TouchableOpacity style={{height:50,borderRadius:10,justifyContent:'center',alignItems:'center',backgroundColor:'orange',marginTop:40}}>
+          <TouchableOpacity style={{height:50,borderRadius:10,justifyContent:'center',alignItems:'center',backgroundColor:'orange',marginTop:40}} onPress={()=>this.props.navigation.navigate('Home')}>
             <Text style={Styler.txt1}>Continue Shopping</Text>
           </TouchableOpacity>
         </View>

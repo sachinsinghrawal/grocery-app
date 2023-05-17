@@ -10,20 +10,28 @@ import {
   Dimensions,
   StyleSheet,
 } from 'react-native';
-import {Icon} from 'react-native-elements';
+import {Header, Icon} from 'react-native-elements';
 import {RFValue} from 'react-native-responsive-fontsize';
 import Swiper from 'react-native-swiper'
 
 export default class Item extends Component {
+  renderLeftComponent=()=>{
+    return (
+      <TouchableOpacity style={styles.topNav} onPress={()=>this.props.navigation.goBack()}><Icon name='chevron-back-outline' type='ionicon' size={30}/></TouchableOpacity>
+    );
+  }
+  renderRightComponent=()=>{
+    return (
+      <TouchableOpacity style={styles.topNav}  onPress={()=>this.props.navigation.navigate('cart')}><Icon name='lock-closed-outline' type='ionicon' size={25}/></TouchableOpacity>
+    );
+  }
   render() {
     return (
       <View style={{flex: 1,backgroundColor:'#fff'}}>
         <View style={{flex: 0.5,paddingHorizontal:20,borderBottomLeftRadius:20,borderBottomRightRadius:20,backgroundColor:'#fcb56d'}}>
           {/* top navigation */}
-          <View style={{flexDirection:'row',justifyContent:'space-between',marginTop:10}}>
-                <TouchableOpacity style={styles.topNav} onPress={()=>this.props.navigation.goBack()}><Icon name='chevron-back-outline' type='ionicon' size={30}/></TouchableOpacity>
-                <TouchableOpacity style={styles.topNav}  onPress={()=>this.props.navigation.navigate('cart')}><Icon name='lock-closed-outline' type='ionicon' size={25}/></TouchableOpacity>
-          </View>
+          <Header leftComponent={this.renderLeftComponent()} rightComponent={this.renderRightComponent()} containerStyle={{backgroundColor:'#fcb56d',paddingHorizontal:0}}/>
+
           <Swiper
             style={{}}
             showsButtons={false}
@@ -77,7 +85,7 @@ const styles = StyleSheet.create({
     
   },
   topNav:{ 
-    width:"12%",
+    width:40,
     backgroundColor:'#fff',
     // shadowColor:'black',
     // elevation:10,

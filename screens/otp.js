@@ -13,7 +13,6 @@ import OTPTextInput from 'react-native-otp-textinput';
 import {RFValue} from 'react-native-responsive-fontsize';
 import CountDown from 'react-native-countdown-component';
 
-
 export default class Otp extends Component {
   // clearText = () => {
   //     this.otpInput.clear();
@@ -22,18 +21,21 @@ export default class Otp extends Component {
   // setText = () => {
   //     this.otpInput.setValue("1234");
   // }
-constructor(props){
-  super(props);
-  this.state={
-    status:false
+  constructor(props) {
+    super(props);
+    this.state = {
+      status: false,
+      stat: '',
+    };
   }
-}
   render() {
     return (
       <ScrollView>
-        <View style={{width: '10%', marginTop: 10}}>
+        <TouchableOpacity
+          style={{width: '10%', marginTop: 10}}
+          onPress={() => this.props.navigation.goBack()}>
           <Icon name="chevron-back-outline" type="ionicon" size={35} />
-        </View>
+        </TouchableOpacity>
 
         <View
           style={{
@@ -59,6 +61,10 @@ constructor(props){
         <OTPTextInput
           // ref={e => (this.otpInput = e)}
           textInputStyle={{borderWidth: 3, borderRadius: 5}}
+          handleTextChange={value => {
+            this.setState({stat: value});
+          }}
+          defaultValue={this.state.stat}
           containerStyle={{width: '85%', alignSelf: 'center'}}
         />
         {/* <Button title="clear" onClick={this.clearText}/> */}
@@ -67,36 +73,38 @@ constructor(props){
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
-            alignItems:'center',
+            alignItems: 'center',
             width: '93%',
             alignSelf: 'center',
             marginTop: 10,
           }}>
-        
-         
-         {
-          this.state.status ?
-          <TouchableOpacity onPress={()=> {this.setState({status:false})}}>
-          <Text style={{color: 'grey', fontSize: 14}}>Resend Code</Text>
-        </TouchableOpacity>
-        :
-        <CountDown
-        size={15}
-        until={60}
-        onFinish={() => this.setState({status:true})}
-        digitStyle={{
-        //   backgroundColor: '#FFF',
-        //   borderWidth: 2,
-        //   borderColor: '#1CC625',
-        }}
-        digitTxtStyle={{color: '#1CC625'}}
-        timeLabelStyle={{color: 'red', fontWeight: 'bold'}}
-        separatorStyle={{color: '#1CC625'}}
-        timeToShow={['H', 'M', 'S']}
-        timeLabels={{m: null, s: null}}
-        showSeparator
-      />
-         }
+          {this.state.status ? (
+            <TouchableOpacity
+              onPress={() => {
+                this.setState({status: false});
+              }}>
+              <Text style={{color: 'grey', fontSize: 14}}>Resend Code</Text>
+            </TouchableOpacity>
+          ) : (
+            <CountDown
+              size={15}
+              until={60}
+              onFinish={() => this.setState({status: true})}
+              digitStyle={
+                {
+                  //   backgroundColor: '#FFF',
+                  //   borderWidth: 2,
+                  //   borderColor: '#1CC625',
+                }
+              }
+              digitTxtStyle={{color: '#1CC625'}}
+              timeLabelStyle={{color: 'red', fontWeight: 'bold'}}
+              separatorStyle={{color: '#1CC625'}}
+              timeToShow={['H', 'M', 'S']}
+              timeLabels={{m: null, s: null}}
+              showSeparator
+            />
+          )}
         </View>
 
         <TouchableOpacity
@@ -111,7 +119,12 @@ constructor(props){
             borderRadius: 10,
             marginBottom: 50,
           }}
-          onPress={() => this.props.navigation.navigate('Profile')}>
+          onPress={() => {
+            this.state.stat == '1234'
+              ? this.props.navigation.navigate('Profile')
+              : alert("OTP didn't match"),
+              this.setState({stat: ''});
+          }}>
           <Text
             style={{
               fontSize: RFValue(14, 580),

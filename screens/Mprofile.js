@@ -11,10 +11,10 @@ export default class Mprofile extends Component
             <View style={{flexDirection:'row',alignItems:'center',width:200}}>
 
                 <TouchableOpacity onPress={()=>this.props.navigation.goBack()}>
-                 <Icon name='chevron-back-outline' type='ionicon' size={25}/>
+                 <Icon name='chevron-back-outline' type='ionicon' size={25} color='black'/>
                 </TouchableOpacity>
                 
-                <Text style={{paddingLeft:10,fontSize:RFValue(14,580),fontWeight:'700'}}>My Profile</Text>
+                <Text style={{paddingLeft:10,fontSize:RFValue(14,580),fontWeight:'700',color:'black'}}>My Profile</Text>
             </View>
         )
 
@@ -33,7 +33,7 @@ export default class Mprofile extends Component
                     <Image source={require('../imgs/profile.png')} style={{height:400,width:370}}/>
                     <TextInput placeholder="Name" style={Styler.textInput }/>
                     <TextInput placeholder="email" style={Styler.textInput }/>
-                    <TouchableOpacity style={Styler.btn}><Text style={{paddingLeft:10,fontSize:RFValue(14,580),fontWeight:'700'}}>Save</Text></TouchableOpacity>
+                    <TouchableOpacity style={Styler.btn}><Text style={{paddingLeft:10,fontSize:RFValue(14,580),fontWeight:'700',color:'black'}}>Save</Text></TouchableOpacity>
                 
                 
               </ScrollView>
