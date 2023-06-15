@@ -14,40 +14,55 @@ import {
 import {Icon, Header, SearchBar} from 'react-native-elements';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const DATA = [
-  {id: '1', img: require('../imgs/a1.png'), title: 'Fruits', color: 'pink'},
-  {id: '2', img: require('../imgs/a2.png'), title: 'Juice', color: 'skyblue'},
-  {id: '3', img: require('../imgs/a3.png'), title: 'Meat', color: 'gold'},
-  {
-    id: '4',
-    img: require('../imgs/a4.png'),
-    title: 'Vegetable',
-    color: 'lightgreen',
-  },
-  {id: '5', img: require('../imgs/a5.png'), title: 'rice', color: 'pink'},
-  {id: '6', img: require('../imgs/a6.png'), title: 'oils', color: 'orange'},
-  {
-    id: '7',
-    img: require('../imgs/a1.png'),
-    title: 'dryfruits',
-    color: 'skyblue',
-  },
-  {id: '8', img: require('../imgs/a7.png'), title: 'more', color: '#d1eba2'},
-];
+// const DATA = [
+//   {id: '1', img: require('../imgs/a1.png'), title: 'Fruits', color: 'pink'},
+//   {id: '2', img: require('../imgs/a2.png'), title: 'Juice', color: 'skyblue'},
+//   {id: '3', img: require('../imgs/a3.png'), title: 'Meat', color: 'gold'},
+//   {
+//     id: '4',
+//     img: require('../imgs/a4.png'),
+//     title: 'Vegetable',
+//     color: 'lightgreen',
+//   },
+//   {id: '5', img: require('../imgs/a5.png'), title: 'rice', color: 'pink'},
+//   {id: '6', img: require('../imgs/a6.png'), title: 'oils', color: 'orange'},
+//   {
+//     id: '7',
+//     img: require('../imgs/a1.png'),
+//     title: 'dryfruits',
+//     color: 'skyblue',
+//   },
+//   {id: '8', img: require('../imgs/a7.png'), title: 'more', color: '#d1eba2'},
+// ];
 
 export default class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: '',
+      username:'',
       categories: [],
+      exclusive:[],
       isLoading: true,
     };
   }
 
   componentDidMount() {
     this.fetch_category();
+    this.fetch_exclusive();
+    this.read_user();
+  }
+  
+  read_user=async()=>{
+    try {
+     const value = await AsyncStorage.getItem('username')
+     this.setState({username:value})
+    } catch(e) {
+      console.warn(e);
+    }
+
   }
 
   fetch_category = () => {
@@ -65,6 +80,31 @@ export default class HomePage extends Component {
           this.setState({categories: json.category});
         } else {
           this.setState({categories: []});
+        }
+      })
+      .catch(error => {
+        console.warn(error);
+      })
+      .finally(() => {
+        this.setState({isLoading: false});
+      });
+  };
+
+  fetch_exclusive = () => {
+    fetch(global.api + 'get-jwellery-category-web', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        // console.warn(json)
+        if (json.status) {
+          this.setState({exclusive: json.data});
+        } else {
+          this.setState({exclusive: []});
         }
       })
       .catch(error => {
@@ -112,7 +152,7 @@ export default class HomePage extends Component {
           // paddingLeft: insets.left,
           // paddingRight: insets.right,
         }}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>this.props.navigation.navigate('Inside',{next_page:item.link})}>
           <View
             style={{
               height: '70%',
@@ -125,8 +165,9 @@ export default class HomePage extends Component {
               shadowColor: '#52006A',
               elevation: 5,
               backgroundColor: 'white',
-              borderWidth: 0.5,
-            }}>
+              borderWidth: 2,
+              borderColor:'#F89880'
+            }} >
             <View>
               <Image
                 source={{uri: global.img_url + item.image}}
@@ -158,7 +199,7 @@ export default class HomePage extends Component {
           width: '47%',
           height: Dimensions.get('window').height / 3.2,
           justifyContent: 'space-between',
-          backgroundColor: item.color,
+          backgroundColor: '#F89880',
           margin: 10,
           marginHorizontal: 5,
           borderRadius: 20,
@@ -175,19 +216,19 @@ export default class HomePage extends Component {
             justifyContent: 'space-between',
             padding: 10,
           }}>
-          <View>
+          <View style={{width:'60%'}}>
             <Text
               style={{
-                fontSize: RFValue(13, 580),
+                fontSize: RFValue(10, 580),
                 fontWeight: '600',
                 color: 'black',
               }}>
-              Apple
+              {item.name}
             </Text>
-            <Text style={{color: 'black', fontWeight: '600'}}>10 KG</Text>
+            <Text style={{color: 'black', fontWeight: '600',fontSize: RFValue(10, 580),}}>10 KG</Text>
             <Text
               style={{
-                fontSize: RFValue(13, 580),
+                fontSize: RFValue(10, 580),
                 fontWeight: '600',
                 color: 'black',
               }}>
@@ -206,7 +247,7 @@ export default class HomePage extends Component {
           }}>
           <Image
             source={require('../imgs/pizza.png')}
-            style={{height: 110, width: 110}}
+            style={{height: 100, width: 110}}
           />
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
@@ -267,7 +308,7 @@ export default class HomePage extends Component {
                 fontWeight: '700',
                 color: 'black',
               }}>
-              Hey AAA,
+              Hey {this.state.username},
             </Text>
             <Text style={{fontSize: RFValue(11, 580)}}>
               Find Fresh Grocery Products !
@@ -294,7 +335,7 @@ export default class HomePage extends Component {
                     width:'92%',
                     borderRadius: 15,
                     marginRight: 100,
-                    borderColor: 'white',
+                    borderColor: '#F89880',
                     borderWidth: 3,
                   }}
                 />
@@ -308,7 +349,7 @@ export default class HomePage extends Component {
                     width:'92%',
                     borderRadius: 15,
                     marginRight: 100,
-                    borderColor: 'white',
+                    borderColor: '#F89880',
                     borderWidth: 3,
                   }}
                 />
@@ -322,7 +363,7 @@ export default class HomePage extends Component {
                     width:'92%',
                     borderRadius: 15,
                     marginRight: 100,
-                    borderColor: 'white',
+                    borderColor: '#F89880',
                     borderWidth: 3,
                   }}
                 />
@@ -336,7 +377,7 @@ export default class HomePage extends Component {
                     width:'92%',
                     borderRadius: 15,
                     marginRight: 100,
-                    borderColor: 'white',
+                    borderColor: '#F89880',
                     borderWidth: 3,
                   }}
                 />
@@ -350,7 +391,7 @@ export default class HomePage extends Component {
                     width:'92%',
                     borderRadius: 20,
                     marginRight: 100,
-                    borderColor: 'white',
+                    borderColor: '#F89880',
                     borderWidth: 3,
                   }}
                 />
@@ -422,7 +463,7 @@ export default class HomePage extends Component {
 
           <View style={{marginTop: 10}}>
             <FlatList
-              data={DATA}
+              data={this.state.exclusive}
               numColumns={2}
               renderItem={this.renderItem2}
               keyExtractor={item => item.id}

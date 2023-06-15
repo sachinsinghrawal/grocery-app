@@ -16,18 +16,52 @@ import CountDown from 'react-native-countdown-component';
 export default class Otp extends Component {
   // clearText = () => {
   //     this.otpInput.clear();
-  // }
+  // }1
 
   // setText = () => {
   //     this.otpInput.setValue("1234");
   // }
   constructor(props) {
     super(props);
+    console.warn(this.props);
     this.state = {
       status: false,
       stat: '',
+      isLoading:true
     };
   }
+
+  otp_verification = () => {
+    // console.warn('fetching data',e)
+    fetch( global.api2 + 'staff-otp-verification', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+       contact: this.props.route.params.number,
+       otp: this.state.stat
+      }),
+    })
+      .then(response => response.json())
+      .then(json => {
+        // console.warn(json.data.contact);
+        if (json.msg=='ok') {
+          // alert(json.data.current_page)
+          this.props.navigation.navigate('Profile')
+        } else {
+          alert('invalid otp')
+        }
+      })
+      .catch(error => {
+        console.warn(error);
+      })
+      .finally(() => {
+        this.setState({isLoading: false});
+      });
+  }; 
+
   render() {
     return (
       <ScrollView>
@@ -65,7 +99,8 @@ export default class Otp extends Component {
             this.setState({stat: value});
           }}
           defaultValue={this.state.stat}
-          containerStyle={{width: '85%', alignSelf: 'center'}}
+          inputCount={6}
+          containerStyle={{width: '92%', alignSelf: 'center'}}
         />
         {/* <Button title="clear" onClick={this.clearText}/> */}
 
@@ -120,10 +155,8 @@ export default class Otp extends Component {
             marginBottom: 50,
           }}
           onPress={() => {
-            this.state.stat == '1234'
-              ? this.props.navigation.navigate('Profile')
-              : alert("OTP didn't match"),
-              this.setState({stat: ''});
+             this.otp_verification();
+             
           }}>
           <Text
             style={{

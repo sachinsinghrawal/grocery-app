@@ -12,11 +12,14 @@ import {
 import {Icon} from 'react-native-elements';
 import {RFValue} from 'react-native-responsive-fontsize';
 // import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class Profile extends Component {
   state = {
     username: '',
     email: '',
+    warn:false,
+    warn2:false,
   };
   validateName = () => {
     var regex = /^[a-zA-Z ]{2,30}$/;
@@ -28,15 +31,24 @@ export default class Profile extends Component {
     return re.test(this.state.email);
   };
 
-  showToastWithGravityAndOffset = () => {
-    ToastAndroid.showWithGravityAndOffset(
-      'INVALID NAME',
-      ToastAndroid.LONG,
-      ToastAndroid.BOTTOM,
-      25,
-      50,
-    );
-  };
+  setData=async(name,email)=>{
+    try {
+        await AsyncStorage.setItem('username', name);
+        await AsyncStorage.setItem('email',email)
+      } 
+    catch (e) {
+      console.warn(e);
+  }}
+
+  // showToastWithGravityAndOffset = () => {
+  //   ToastAndroid.showWithGravityAndOffset(
+  //     'PLEASE ENTER VALID NAME',
+  //     ToastAndroid.LONG,
+  //     // ToastAndroid.TOP,
+  //     25,
+  //     50,
+  //   );
+  // };
 
   //   showToast = () => {
   //     ToastAndroid.show('A pikachu appeared nearby !', ToastAndroid.SHORT);
@@ -46,7 +58,9 @@ export default class Profile extends Component {
     return (
       <View style={{flex: 1}}>
         <ScrollView>
-          <TouchableOpacity style={{width: '10%', marginTop: 10}} onPress={()=>this.props.navigation.goBack()}>
+          <TouchableOpacity
+            style={{width: '10%', marginTop: 10}}
+            onPress={() => this.props.navigation.goBack()}>
             <Icon name="chevron-back-outline" type="ionicon" size={35} />
           </TouchableOpacity>
 
@@ -80,32 +94,39 @@ export default class Profile extends Component {
               marginTop: 30,
             }}>
             <View>
-              <Text>Name</Text>
+              <Text style={{fontWeight:'600',color:'black'}}>Name</Text>
               <TextInput
                 style={{height: 50, borderWidth: 0.5, borderRadius: 5}}
                 placeholder=" eg..sam  {only_letters  min-2 max-30}"
                 onChangeText={value => this.setState({username: value})}
                 onBlur={() => {
-                  if (!this.validateName(this.state.username)) {
-                    this.showToastWithGravityAndOffset();
-                  }
-                }}></TextInput>
+                  this.setState({warn:true})
+                }}
+              ></TextInput>
             </View>
-            {/* {alert(this.state.username)} */}
+
+            {!this.validateName(this.state.username) && this.state.warn ? (
+              <View style={{height:25,width:'50%',backgroundColor:'red',alignItems:'center',borderRadius:10,alignSelf:'flex-end',marginTop:5}}><Text style={{color:'white'}}>enter valid name</Text></View>
+            ) : (<View></View>)}
+
             <View>
-              <Text>Email Address</Text>
+              <Text style={{fontWeight:'600',color:'black'}}>Email Address</Text>
               <TextInput
                 style={{height: 50, borderWidth: 0.5, borderRadius: 5}}
                 placeholder=" eg.. abc@123"
                 onChangeText={value => this.setState({email: value})}
                 onBlur={() => {
-                  if (!this.validateEmail(this.state.email)) {
-                    alert('invalid email');
-                  }
+                  this.setState({warn2:true})
                 }}
               />
             </View>
+
+            {!this.validateEmail(this.state.email) && this.state.warn2  ? (
+              <View style={{height:25,width:'50%',backgroundColor:'red',alignItems:'center',borderRadius:10,alignSelf:'flex-end',marginTop:5}}><Text style={{color:'white'}}>enter valid email</Text></View>
+            ) : (<View></View>)}
           </View>
+
+         
 
           <TouchableOpacity
             style={{
@@ -120,12 +141,12 @@ export default class Profile extends Component {
               marginBottom: 50,
             }}
             onPress={() => {
-              if (this.validateEmail() && this.validateName()) 
-              { this.props.navigation.navigate('drawer');
-                alert('Welcome'+' '+ this.state.username +'!');
-              }
-              else
-                alert('must register to proceed')
+              if (this.validateEmail() && this.validateName()) {
+                this.setData(this.state.username,this.state.email);
+                this.props.navigation.navigate('drawer');
+                // alert('Welcome'+' '+ this.state.username +'!');
+              } else alert('must register to proceed');
+             
             }}>
             <Text
               style={{

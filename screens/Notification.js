@@ -16,7 +16,7 @@ export default class Notification extends Component
     {
         return(
             <View style={{flex:1}}>
-                <Header leftComponent={this.renderLeftComponent()} containerStyle={{backgroundColor:'orange',paddingHorizontal:0,height:75}}/>
+                <Header leftComponent={this.renderLeftComponent()} containerStyle={{backgroundColor:'orange',paddingHorizontal:0}}/>
                 
                 <View style={{width:'92%',alignSelf:'center',height:'100%',marginTop:0}}>               
                     <View style={{marginVertical:15}}>
