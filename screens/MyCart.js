@@ -107,10 +107,12 @@ export default class MyCart extends Component {
             style={{height: 100, width: 100}}
           />
         </View>
-        <View style={{width: '70%'}}>
+        <View style={{width: '70%',paddingLeft:5}}>
           <View style={{flexDirection: 'row',justifyContent:'space-between'}}>
             <Text>HAIR CARE</Text>
-            <Icon name="trash-bin-outline" type="ionicon" size={20} />
+            <TouchableOpacity onPress={()=>{this.setState({count:0})}}>
+             <Icon name="trash-bin-outline" type="ionicon" size={20} />
+            </TouchableOpacity>           
           </View>
           <Text>{item.title}</Text>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -200,7 +202,7 @@ export default class MyCart extends Component {
           
           {/* address section  */}
           <View style={{flexDirection:'row',marginBottom:10,padding:10,borderBottomWidth:1,borderTopWidth:1,justifyContent:'space-between'}}>
-            <View>
+            <View style={{width:'60%'}}>
               <Text>Change Address</Text>
               <View style={{flexDirection:'row',alignItems:'center'}}>
                 <View style={{backgroundColor:'silver',marginRight:10}}><Icon name='location-outline' type='ionicon' size={30}/></View>

@@ -94,7 +94,7 @@ export default class Otp extends Component {
 
         <OTPTextInput
           // ref={e => (this.otpInput = e)}
-          textInputStyle={{borderWidth: 3, borderRadius: 5}}
+          textInputStyle={{borderWidth: 3, borderRadius: 5,width:45}}
           handleTextChange={value => {
             this.setState({stat: value});
           }}

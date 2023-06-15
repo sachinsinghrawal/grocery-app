@@ -199,7 +199,7 @@ export default class HomePage extends Component {
           width: '47%',
           height: Dimensions.get('window').height / 3.2,
           justifyContent: 'space-between',
-          backgroundColor: '#F89880',
+          backgroundColor: '#FAC898',
           margin: 10,
           marginHorizontal: 5,
           borderRadius: 20,
